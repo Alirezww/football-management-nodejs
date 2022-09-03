@@ -41,6 +41,14 @@ class Application {
 
     handleErrors(){
 
+        this.#app.use((req, res, next) => {
+            return res.status(404).json({
+                status : 404,
+                success : false,
+                message : "We couldnt find the page you are looking for!!!"
+            })
+        })
+
         this.#app.use((error, req, res, next) => {
             const status = error?.status || 500;
             const message = error?.message || "InternalErrorServer";
