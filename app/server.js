@@ -1,3 +1,5 @@
+const { AllRoutes } = require("../app/routes/router")
+
 class Application {
     #express = require("express");
     #app = this.#express()
@@ -36,7 +38,7 @@ class Application {
     }
 
     createRoutes(){
-        this.#app.use("/auth", require("../app/routes/authRoute"));
+        this.#app.use(AllRoutes);
     }
 
     handleErrors(){
