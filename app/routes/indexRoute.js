@@ -4,6 +4,13 @@ const router = require("express").Router();
 
 /**
  * @swagger
+ * tags:
+ *      name: IndexPage
+ *      description: index page routes
+ */
+
+/**
+ * @swagger
  * /:
  *      get:
  *          summary: index page of project
