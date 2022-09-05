@@ -1,10 +1,10 @@
 const { AuthController } = require("../http/controllers/auth.controller");
 const { errorValidaitonMapper } = require("../http/middlewares/errorsMapper");
-const { registerValidator } = require("../http/validations/authValidator");
+const { registerValidator, loginValidator } = require("../http/validations/authValidator");
 
 const router = require("express").Router();
 
-router.post("/login", AuthController.login);
+router.post("/login", loginValidator(), errorValidaitonMapper, AuthController.login);
 
 router.post("/register",registerValidator(), errorValidaitonMapper , AuthController.register);
 

@@ -51,6 +51,22 @@ function registerValidator(){
     ]
 }
 
+function loginValidator(){
+    return [
+        body("username")
+            .notEmpty().withMessage("Username field should not be empty.")
+
+            .custom((username, { req }) => {
+                const usernameRegep = /^[a-z]+[a-z0-9\_\.]{2,}/gi;
+                if(!usernameRegep.test(username)) throw "Please enter a valid username";
+                return true;
+            }),
+
+        body("password").notEmpty().withMessage("Password fled should not be empty.")
+    ]
+}
+
 module.exports = {
-    registerValidator
+    registerValidator,
+    loginValidator
 }
