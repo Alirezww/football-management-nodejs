@@ -9,11 +9,13 @@ class AuthController {
 
             const user = await UserModel.findOne({ username });
             if(!user) throw { status : 400, success : false, message : "Username or password is wrong." };
-            
-            compareResult = compareResult(user.password, password);
-            if(!compareResult) throw { status : 400, success : false, message : "Username or password is wrong." };
 
-            user.token = generateWebToken({ username });
+            const matchPassword = compareResult(password, user.password);
+            if(!matchPassword) throw { status : 400, success : false, message : "Username or password is wrong." };
+
+            const token = generateWebToken({ username })
+
+            user.token = token;
             await user.save();
 
             return res.status(200).json({
