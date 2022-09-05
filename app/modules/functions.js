@@ -11,12 +11,23 @@ const compareResult = (password, oldPassword) => {
 }
 
 const generateWebToken = (username) => {
-    const token = jwt.sign({ username }, "ASDMASIDJHFJ*$&#R", { expiresIn : "3 days" });
+    const token = jwt.sign(username, "ASDMASIDJHFJ*$&#R", { expiresIn : "3 days" });
     return token;
+}
+
+const verifyToken = (token, secretKey) => {
+    try{
+        const result = jwt.verify(token, secretKey);
+        if(!result?.username) false;
+        return result;
+    }catch(err){
+        return false
+    }
 }
 
 module.exports = {
     hash_string,
     compareResult,
-    generateWebToken
+    generateWebToken,
+    verifyToken
 }
