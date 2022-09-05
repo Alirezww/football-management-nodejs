@@ -1,6 +1,7 @@
 const { AllRoutes } = require("../app/routes/router");
 const swaggerUI = require("swagger-ui-express");
 const swaggerJSDoc = require("swagger-jsdoc");
+const morgan = require("morgan");
 
 class Application {
     #express = require("express");
@@ -31,6 +32,7 @@ class Application {
         this.#app.use(this.#express.json({  }));
         this.#app.use(this.#express.urlencoded({ extended : false }));
         this.#app.use(this.#express.static(path.join(__dirname, "..", "..", "public")));
+        this.#app.use(morgan("dev"));
 
         this.#app.use("/api", swaggerUI.serve, swaggerUI.setup(swaggerJSDoc({
             definition : {
