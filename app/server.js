@@ -45,7 +45,7 @@ class Application {
                     }
                 ]
             },
-            apis : ["./routes/*.js"],
+            apis : ["./app/routes/*.js"],
         })));
     }
 
