@@ -1,12 +1,27 @@
 const { UserModel } = require("../../models/User");
-const { validationResult } = require("express-validator")
-const { hash_string } = require("../../modules/functions");
+const { hash_string, compareResult, generateWebToken } = require("../../modules/functions");
 
 class AuthController {
 
     async login(req, res, next){
         try{
+            const { username, password } = req.body;
+
+            const user = await UserModel.findOne({ username });
+            if(!user) throw { status : 400, success : false, message : "Username or password is wrong." };
             
+            compareResult = compareResult(user.password, password);
+            if(!compareResult) throw { status : 400, success : false, message : "Username or password is wrong." };
+
+            user.token = generateWebToken({ username });
+            await user.save();
+
+            return res.status(200).json({
+                status : 200,
+                success : true,
+                message : "You logged in successfuly",
+                token
+            })
         }catch(err){
             next(err);
         }
