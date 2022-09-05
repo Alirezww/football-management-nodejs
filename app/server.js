@@ -1,4 +1,6 @@
-const { AllRoutes } = require("../app/routes/router")
+const { AllRoutes } = require("../app/routes/router");
+const swaggerUI = require("swagger-ui-express");
+const swaggerJSDoc = require("swagger-jsdoc");
 
 class Application {
     #express = require("express");
@@ -28,7 +30,23 @@ class Application {
 
         this.#app.use(this.#express.json({  }));
         this.#app.use(this.#express.urlencoded({ extended : false }));
-        this.#app.use(this.#express.static(path.join(__dirname, "..", "..", "public")))
+        this.#app.use(this.#express.static(path.join(__dirname, "..", "..", "public")));
+
+        this.#app.use("/api", swaggerUI.serve, swaggerUI.setup(swaggerJSDoc({
+            definition : {
+                info : {
+                    title : "Fooball-managment project",
+                    version : "1.0.0",
+                    description : "a toturial project for me to practice and learn more about nodejs, mongo, express"
+                },
+                servers : [
+                    {
+                        url : "http://localhost:9000"
+                    }
+                ]
+            },
+            apis : ["./routes/*.js"],
+        })));
     }
 
     createServer(port){
