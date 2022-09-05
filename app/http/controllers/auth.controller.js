@@ -1,4 +1,5 @@
 const { UserModel } = require("../../models/User");
+const { validationResult } = require("express-validator")
 const { hash_string } = require("../../modules/functions");
 
 class AuthController {
