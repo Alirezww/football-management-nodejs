@@ -8,7 +8,7 @@ function registerValidator(){
             .isLength({ min : 5 , max : 40}).withMessage("Username should less than 6 chars and more than 40 chars")
             .custom(async(username, { req }) => {
                 const usernameRegep = /^[a-z]+[a-z0-9\_\.]{2,}/gi;
-                if(!usernameRegep.test(value)) throw "Please enter a valid username";
+                if(!usernameRegep.test(username)) throw "Please enter a valid username";
 
                 const user = await UserModel.findOne({ username });
                 if(user) throw "The entered username is common.";;
@@ -45,7 +45,7 @@ function registerValidator(){
             .isLength({ min : 6 , max : 16}).withMessage("Password should less than 6 chars and more than 16 chars")
 
             .custom((password, { req }) => {
-                if(password !== req.confirmPassword) throw "Password and confirm Password filed should be same";
+                if(password !== req.body.confirmPassword) throw "Password and confirm Password filed should be same";
                 return true;
             })
     ]
