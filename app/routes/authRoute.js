@@ -80,6 +80,27 @@ router.post("/login-username", loginValidator(), errorValidaitonMapper, AuthCont
  */
 router.post("/register-username",registerValidator(), errorValidaitonMapper , AuthController.registerUsername);
 
+/**
+ * @swagger
+ * /auth/get-otp:
+ *      post:
+ *          summary: register
+ *          tags: [authenticationSection]
+ *          description: register to site via username, email, mobile, password
+ *          responses:
+ *              200:
+ *                  description: success
+ *              500:
+ *                  description: InternalServerError
+ *              400:
+ *                  description: BadRequest
+ *          parameters:
+ *          -   name: mobile
+ *              in: formData
+ *              required: true
+ *              type: string
+ */
+router.post("/get-otp", AuthController.getOtp)
 module.exports = {
     AuthRoute : router
 }

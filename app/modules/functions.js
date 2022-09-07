@@ -25,9 +25,14 @@ const verifyToken = (token, secretKey) => {
     }
 }
 
+const randomNumberGenerator = () => {
+    return Math.floor((Math.random() * 90000) + 10000)
+}
+
 module.exports = {
     hash_string,
     compareResult,
     generateWebToken,
-    verifyToken
+    verifyToken,
+    randomNumberGenerator
 }
