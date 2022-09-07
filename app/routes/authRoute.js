@@ -104,11 +104,11 @@ router.post("/get-otp", AuthController.getOtp);
 
 /**
  * @swagger
- * /auth/get-otp:
+ * /auth/check-otp:
  *      post:
- *          summary: register
+ *          summary: check code otp
  *          tags: [authenticationSection]
- *          description: register to site via username, email, mobile, password
+ *          description: check otp code via mobile and entered code
  *          responses:
  *              200:
  *                  description: success
@@ -118,6 +118,11 @@ router.post("/get-otp", AuthController.getOtp);
  *                  description: BadRequest
  *          parameters:
  *          -   name: mobile
+ *              in: formData
+ *              required: true
+ *              type: string
+ * 
+ *          -   name: code
  *              in: formData
  *              required: true
  *              type: string

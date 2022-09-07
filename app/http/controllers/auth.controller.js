@@ -88,8 +88,14 @@ class AuthController {
             console.log(now);
             if(user.otp.expiresIn < now) throw { status: 401, message: "The code has been expired" };
 
+            const username = user.username
+            const accessToken = generateWebToken({ username });
+            
             return res.json({
-                message: "you have logged in succufully!!"
+                data: {
+                    success: true,
+                    accessToken
+                }
             })
         }catch(err){
             next(err)
