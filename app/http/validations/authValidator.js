@@ -1,5 +1,6 @@
 const { body } = require("express-validator");
 const { UserModel } = require("../../models/User");
+const Joi = require("@hapi/joi")
 
 function registerValidator(){
     return [
@@ -64,9 +65,14 @@ function loginValidator(){
 
         body("password").notEmpty().withMessage("Password fled should not be empty.")
     ]
-}
+};
+
+const getOtpSchema = Joi.object({
+    mobile : Joi.string().length(11).pattern((/^09[0-9]{9}$/)).error(new Error("mobile is not valid.."))
+})
 
 module.exports = {
     registerValidator,
-    loginValidator
+    loginValidator,
+    getOtpSchema
 }

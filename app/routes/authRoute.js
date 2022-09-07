@@ -100,7 +100,8 @@ router.post("/register-username",registerValidator(), errorValidaitonMapper , Au
  *              required: true
  *              type: string
  */
-router.post("/get-otp", AuthController.getOtp)
+router.post("/get-otp", AuthController.getOtp);
+
 module.exports = {
     AuthRoute : router
 }

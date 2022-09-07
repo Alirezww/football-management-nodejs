@@ -2,6 +2,7 @@ const { UserModel } = require("../../models/User");
 const { hash_string, compareResult, generateWebToken, randomNumberGenerator } = require("../../modules/functions");
 
 const autoBind = require("auto-bind");
+const { getOtpSchema } = require("../validations/authValidator");
 
 class AuthController {
 
@@ -52,6 +53,8 @@ class AuthController {
 
     async getOtp(req, res, next){
         try{
+            await getOtpSchema.validateAsync(req.body)
+
             const { mobile } = req.body;
             const code = randomNumberGenerator();
             
