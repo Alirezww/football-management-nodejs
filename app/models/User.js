@@ -4,6 +4,11 @@ const InviteRequest = new mongoose.Schema({
     teamID : { type : mongoose.Types.ObjectId, required : true },
     status : { type : String, enum : ["pending", "rejected", "accepted"], default : "pending" },
     inviter : { type : String, required : true, trim : true }
+});
+
+const otpSchema = new mongoose.Schema({
+    code : { type: Number, default: 0 },
+    expiresIn: { type: Date, default: 0 }
 })
 
 const userSchama = new mongoose.Schema({
@@ -17,6 +22,7 @@ const userSchama = new mongoose.Schema({
     role : { type : String, enum : ["player", "coach", "judge"], default : "player" },
     skills : { type : [String], default : [] },
     token : { type : String, default : '' },
+    otp : { type: otpSchema },
     profile_image : { type : String, default : '' },
     invite_requests : { type : [InviteRequest] }
 }, { timestamps : true } )
