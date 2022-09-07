@@ -75,6 +75,27 @@ class AuthController {
         }
     }
 
+    async checkOtp(req, res, next){
+        try{
+
+            const { mobile, code } = req.body;
+
+            const user = await UserModel.findOne({ mobile });
+            if(!user) throw { status: 404, message: "User with this mobile has not found!!" };
+    
+            if(user.otp.code != code) throw { status: 401, message: "The code is incorrect..." };
+            const now = new Date().getTime();
+            console.log(now);
+            if(user.otp.expiresIn < now) throw { status: 401, message: "The code has been expired" };
+
+            return res.json({
+                message: "you have logged in succufully!!"
+            })
+        }catch(err){
+            next(err)
+        }
+    }
+
     async saveUser(mobile, code){
         const otp = {
             code,
