@@ -36,9 +36,49 @@ const router = require("express").Router();
  *              required: true
  *              type: string
  */
-router.post("/login-username", loginValidator(), errorValidaitonMapper, AuthController.login);
+router.post("/login-username", loginValidator(), errorValidaitonMapper, AuthController.loginUsername);
 
-router.post("/register",registerValidator(), errorValidaitonMapper , AuthController.register);
+/**
+ * @swagger
+ * /auth/register-username:
+ *      post:
+ *          summary: register
+ *          tags: [authenticationSection]
+ *          description: register to site via username, email, mobile, password
+ *          responses:
+ *              200:
+ *                  description: success
+ *              500:
+ *                  description: InternalServerError
+ *              400:
+ *                  description: BadRequest
+ *          parameters:
+ *          -   name: username
+ *              in: formData
+ *              required: true
+ *              type: string
+ *
+ *          -   name: mobile
+ *              in: formData
+ *              required: true
+ *              type: number
+ * 
+ *          -   name: email
+ *              in: formData
+ *              required: true
+ *              type: string
+ * 
+ *          -   name: password
+ *              in: formData
+ *              required: true
+ *              type: string
+ * 
+ *          -   name: confirmPassword
+ *              in: formData
+ *              required: true
+ *              type: string
+ */
+router.post("/register-username",registerValidator(), errorValidaitonMapper , AuthController.registerUsername);
 
 module.exports = {
     AuthRoute : router

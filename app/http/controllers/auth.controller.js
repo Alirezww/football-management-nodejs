@@ -3,7 +3,7 @@ const { hash_string, compareResult, generateWebToken } = require("../../modules/
 
 class AuthController {
 
-    async login(req, res, next){
+    async loginUsername(req, res, next){
         try{
             const { username, password } = req.body;
 
@@ -29,7 +29,7 @@ class AuthController {
         }
     }
 
-    async register(req, res, next){
+    async registerUsername(req, res, next){
         try{
             const { username, email, mobile, password } = req.body;
             const hashPassword = hash_string(password);
