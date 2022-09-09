@@ -1,5 +1,5 @@
 const { UserModel } = require("../../models/User");
-const { hash_string, compareResult, generateWebToken, randomNumberGenerator } = require("../../modules/functions");
+const { hash_string, compareResult, generateWebToken, randomNumberGenerator, SignRefreshToken } = require("../../modules/functions");
 
 const autoBind = require("auto-bind");
 const { getOtpSchema } = require("../validations/authValidator");
@@ -20,16 +20,17 @@ class AuthController {
             const matchPassword = compareResult(password, user.password);
             if(!matchPassword) throw { status : 400, success : false, message : "Username or password is wrong." };
 
-            const token = generateWebToken({ username })
+            const token = generateWebToken({ username });
+            const refreshToken = await SignRefreshToken(user._id);
 
             user.token = token;
             await user.save();
 
             return res.status(200).json({
-                status : 200,
-                success : true,
-                message : "You logged in successfuly",
-                token
+                data : {
+                    token,
+                    refreshToken
+                }
             })
         }catch(err){
             next(err);

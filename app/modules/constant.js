@@ -1,0 +1,4 @@
+module.exports = {
+    ACCESS_TOKEN_SECRET_KEY : "ASDMASIDJHFJ*$&#R",
+    REFRESH_TOKEN_SECRET_KEY : "SFDAKSJFD(_F*+_"
+}
