@@ -39,7 +39,8 @@ class UserController{
     changeRequestStatus(){
 
     }
+};
 
-
-
+module.exports = {
+    UserController : new UserController()
 }

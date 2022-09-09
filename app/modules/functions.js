@@ -15,7 +15,7 @@ const compareResult = (password, oldPassword) => {
 const verifyToken = (token, secretKey) => {
     try{
         const result = jwt.verify(token, secretKey);
-        if(!result?.username) false;
+        if(!result) false;
         return result;
     }catch(err){
         console.log(err)
