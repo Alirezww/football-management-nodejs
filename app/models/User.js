@@ -21,6 +21,7 @@ const userSchama = new mongoose.Schema({
     teams : { type : [mongoose.Types.ObjectId], defualt : [] },
     role : { type : String, enum : ["player", "coach", "judge"], default : "player" },
     skills : { type : [String], default : [] },
+    last_login: { type: Date },
     token : { type : String, default : '' },
     otp : { type: otpSchema },
     profile_image : { type : String, default : '' },

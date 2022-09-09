@@ -24,6 +24,7 @@ class AuthController {
             const refreshToken = await SignRefreshToken(user._id);
 
             user.token = token;
+            user.last_login = new Date()
             await user.save();
 
             return res.status(200).json({
@@ -86,9 +87,10 @@ class AuthController {
     
             if(user.otp.code != code) throw { status: 401, message: "The code is incorrect..." };
             const now = new Date().getTime();
-            console.log(now);
+
             if(user.otp.expiresIn < now) throw { status: 401, message: "The code has been expired" };
 
+            user.last_login = new Date()
             const accessToken = await SignAccessToken(user._id);
             const refreshToken = await SignRefreshToken(user._id);
             
@@ -105,13 +107,13 @@ class AuthController {
 
     async refreshToken(req, res, next){
         try{
-            console.log(req.headers)
             const { refreshtoken: refreshToken } = req.headers;
 
             const mobile = await VerifRefreshToken(refreshToken);
 
             const user = await UserModel.findOne({ mobile });
 
+            user.last_login = new Date();
             const accessToken = await SignAccessToken(user._id);
             const newRefreshToken = await SignRefreshToken(user._id);
 
