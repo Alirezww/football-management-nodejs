@@ -68,7 +68,30 @@ router.get("/", isAuthenticated ,UserController.profile);
  *              500:
  *                  description: InternalErrorServer
  */
- router.put("/edit", isAuthenticated ,UserController.editProfile);
+router.put("/edit", isAuthenticated ,UserController.editProfile);
+
+/**
+ * @swagger
+ * /profile/image-profile/:
+ *      post:
+ *          summary: upload profile image
+ *          tags: [profile]
+ *          parameters:
+ *              -   name: profile_image
+ *                  in: formData
+ *                  type: file
+ * 
+ *          responses:
+ *              200:
+ *                  description: success
+ *              404:
+ *                  description: notFound
+ *              401:
+ *                  description: unAuthorized
+ *              500:
+ *                  description: InternalErrorServer
+ */
+ router.post("/image-profile/", isAuthenticated ,UserController.editImageProfile);
 
 module.exports = {
     UserRoute : router

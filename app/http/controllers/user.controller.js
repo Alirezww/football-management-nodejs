@@ -51,14 +51,18 @@ class UserController{
                 status: 200,
                 message: "updating the profile was successful..."
             });
-            
+
         }catch(err){
             next(err)
         }
     }
 
-    editImageProfile(){
+    async editImageProfile(req, res, next){
+        try{
 
+        }catch(err){
+            console.log(err)
+        }
     }
 
     getAllRequests(){
