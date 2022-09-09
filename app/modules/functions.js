@@ -23,6 +23,7 @@ const verifyToken = (token, secretKey) => {
         if(!result?.username) false;
         return result;
     }catch(err){
+        console.log(err)
         return false
     }
 }
@@ -40,12 +41,11 @@ const SignRefreshToken = async(userID) => {
 
         jwt.sign(payload, secretKey, options, (err, token) => {
             if(err) reject({ status: 500, message: "plz try logging again..." });
-            console.log(token)
             resolve(token)
         })
         
     })
-}
+};
 
 const randomNumberGenerator = () => {
     return Math.floor((Math.random() * 90000) + 10000)

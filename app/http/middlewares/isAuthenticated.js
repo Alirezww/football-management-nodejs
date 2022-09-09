@@ -1,4 +1,5 @@
 const { UserModel } = require("../../models/User");
+const { ACCESS_TOKEN_SECRET_KEY } = require("../../modules/constant");
 const { verifyToken } = require("../../modules/functions");
 
 const isAuthenticated = async(req, res, next) => {
@@ -10,9 +11,9 @@ const isAuthenticated = async(req, res, next) => {
         if(!authorization) throw authErrorMessage;
 
         const token = authorization.substring(7);
-        if(!token) throw authErrorMessage;
 
-        const result = verifyToken(token, "ASDMASIDJHFJ*$&#R");
+        if(!token) throw authErrorMessage;
+        const result = verifyToken(token, ACCESS_TOKEN_SECRET_KEY);
         if(!result) throw authErrorMessage; 
 
         const username = result?.username;
