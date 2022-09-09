@@ -12,15 +12,14 @@ const compareResult = (password, oldPassword) => {
     return bcrypt.compareSync(password, oldPassword)
 }
 
-const verifyToken = (token, secretKey) => {
-    try{
-        const result = jwt.verify(token, secretKey);
-        if(!result) false;
-        return result;
-    }catch(err){
-        console.log(err)
-        return false
-    }
+const VerifyAccessToken = (token) => {
+    return new Promise((resolve, reject) => {
+        jwt.verify(token, ACCESS_TOKEN_SECRET_KEY, async(err, payload) => {
+            if(err) reject({ status: 401, message: "plz login again..." });
+
+            resolve(payload)
+        })
+    })
 };
 
 const SignAccessToken = (userID) => {
@@ -38,7 +37,7 @@ const SignAccessToken = (userID) => {
             resolve(token)
         })
     })
-}
+};
 
 const SignRefreshToken = async(userID) => {
     return new Promise(async(resolve, reject) => {
@@ -82,7 +81,7 @@ module.exports = {
     hash_string,
     compareResult,
     SignAccessToken,
-    verifyToken,
+    VerifyAccessToken,
     randomNumberGenerator,
     SignRefreshToken,
     VerifRefreshToken

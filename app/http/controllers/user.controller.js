@@ -5,7 +5,7 @@ class UserController{
     async profile(req, res, next){
         try{
 
-            const userID = user.id;
+            const userID = req.user.id;
             const user = await UserModel.findById(userID, { password: 0, otp: 0 } );
 
             return res.status(200).json({
