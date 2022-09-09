@@ -2,7 +2,7 @@ const { UserModel } = require("../../models/User");
 const { hash_string, compareResult, SignAccessToken, randomNumberGenerator, SignRefreshToken, VerifRefreshToken } = require("../../modules/functions");
 
 const autoBind = require("auto-bind");
-const { getOtpSchema } = require("../validations/authValidator");
+const { getOtpSchema, checkOtpSchema } = require("../validations/authValidator");
 
 class AuthController {
 
@@ -79,6 +79,7 @@ class AuthController {
 
     async checkOtp(req, res, next){
         try{
+            await checkOtpSchema.validateAsync(req.body)
 
             const { mobile, code } = req.body;
 
@@ -94,7 +95,7 @@ class AuthController {
             const accessToken = await SignAccessToken(user._id);
             const refreshToken = await SignRefreshToken(user._id);
             
-            return res.json({
+            return res.status(200).json({
                 data: {
                     accessToken,
                     refreshToken

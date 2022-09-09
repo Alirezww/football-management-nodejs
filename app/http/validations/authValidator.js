@@ -69,10 +69,16 @@ function loginValidator(){
 
 const getOtpSchema = Joi.object({
     mobile : Joi.string().length(11).pattern((/^09[0-9]{9}$/)).error(new Error("mobile is not valid.."))
+});
+
+const checkOtpSchema = Joi.object({
+    mobile : Joi.string().length(11).pattern((/^09[0-9]{9}$/)).error(new Error("mobile is not valid..")),
+    code: Joi.string().min(4).max(6).error(new Error("code is not valid..."))
 })
 
 module.exports = {
     registerValidator,
     loginValidator,
-    getOtpSchema
+    getOtpSchema,
+    checkOtpSchema
 }

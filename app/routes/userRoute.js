@@ -91,7 +91,7 @@ router.put("/edit", isAuthenticated ,UserController.editProfile);
  *              500:
  *                  description: InternalErrorServer
  */
- router.post("/image-profile/", isAuthenticated ,UserController.editImageProfile);
+router.post("/image-profile/", isAuthenticated ,UserController.editImageProfile);
 
 module.exports = {
     UserRoute : router
