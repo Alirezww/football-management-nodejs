@@ -12,11 +12,6 @@ const compareResult = (password, oldPassword) => {
     return bcrypt.compareSync(password, oldPassword)
 }
 
-const generateWebToken = (username) => {
-    const token = jwt.sign(username, ACCESS_TOKEN_SECRET_KEY, { expiresIn : "3 days" });
-    return token;
-}
-
 const verifyToken = (token, secretKey) => {
     try{
         const result = jwt.verify(token, secretKey);
@@ -26,6 +21,23 @@ const verifyToken = (token, secretKey) => {
         console.log(err)
         return false
     }
+};
+
+const SignAccessToken = (userID) => {
+    return new Promise(async(resolve, reject) => {
+
+        const user = await UserModel.findById(userID);
+        if(!user) reject({ status: 404, message: "user not found!!" });
+
+        const payload = { mobile: user.mobile };
+        const options = { expiresIn: "6h" };
+        const secretKey = ACCESS_TOKEN_SECRET_KEY;
+
+        jwt.sign(payload, secretKey, options, (err, token) => {
+            if(err) reject({ status: 500, message: "Internal server error occured." });
+            resolve(token)
+        })
+    })
 }
 
 const SignRefreshToken = async(userID) => {
@@ -50,6 +62,7 @@ const SignRefreshToken = async(userID) => {
 const VerifRefreshToken = async(token) => {
     return new Promise((resolve, reject) => {
         jwt.verify(token, REFRESH_TOKEN_SECRET_KEY, async(err, payload) => {
+
             if(err) reject({ status: 401, message: "please login again" });
 
             const { mobile } = payload || {};
@@ -68,7 +81,7 @@ const randomNumberGenerator = () => {
 module.exports = {
     hash_string,
     compareResult,
-    generateWebToken,
+    SignAccessToken,
     verifyToken,
     randomNumberGenerator,
     SignRefreshToken,

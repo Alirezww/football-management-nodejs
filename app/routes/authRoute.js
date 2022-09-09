@@ -129,6 +129,27 @@ router.post("/get-otp", AuthController.getOtp);
  */
 router.post("/check-otp", AuthController.checkOtp);
 
+/**
+ * @swagger
+ * /auth/refresh-token:
+ *      post:
+ *          tags: [authenticationSection]
+ *          summary: checking validation of refresh token and generate new refresh and access token
+ *          parameters:
+ *              -   name: refreshToken
+ *                  in: header
+ *                  required: true
+ *                  type: string
+ *          responses:
+ *              200:
+ *                  description: success
+ *              500:
+ *                  description: InternalServerError
+ *              404:
+ *                  description: NotFound
+ */
+router.post("/refresh-token", AuthController.refreshToken);
+
 module.exports = {
     AuthRoute : router
 }

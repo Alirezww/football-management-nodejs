@@ -1,5 +1,5 @@
 const { UserModel } = require("../../models/User");
-const { hash_string, compareResult, generateWebToken, randomNumberGenerator, SignRefreshToken, VerifRefreshToken } = require("../../modules/functions");
+const { hash_string, compareResult, SignAccessToken, randomNumberGenerator, SignRefreshToken, VerifRefreshToken } = require("../../modules/functions");
 
 const autoBind = require("auto-bind");
 const { getOtpSchema } = require("../validations/authValidator");
@@ -20,7 +20,7 @@ class AuthController {
             const matchPassword = compareResult(password, user.password);
             if(!matchPassword) throw { status : 400, success : false, message : "Username or password is wrong." };
 
-            const token = generateWebToken({ username });
+            const token = await SignAccessToken(user._id);
             const refreshToken = await SignRefreshToken(user._id);
 
             user.token = token;
@@ -89,13 +89,13 @@ class AuthController {
             console.log(now);
             if(user.otp.expiresIn < now) throw { status: 401, message: "The code has been expired" };
 
-            const username = user.username
-            const accessToken = generateWebToken({ username });
+            const accessToken = await SignAccessToken(user._id);
+            const refreshToken = await SignRefreshToken(user._id);
             
             return res.json({
                 data: {
-                    success: true,
-                    accessToken
+                    accessToken,
+                    refreshToken
                 }
             })
         }catch(err){
@@ -105,21 +105,23 @@ class AuthController {
 
     async refreshToken(req, res, next){
         try{
-            const { refreshToken } = req.headers;
+            console.log(req.headers)
+            const { refreshtoken: refreshToken } = req.headers;
 
             const mobile = await VerifRefreshToken(refreshToken);
 
             const user = await UserModel.findOne({ mobile });
 
-            const accessToken = generateWebToken(user._id);
-            const newRefreshToken = SignRefreshToken(user._id);
+            const accessToken = await SignAccessToken(user._id);
+            const newRefreshToken = await SignRefreshToken(user._id);
 
             return res.status(200).json({
                 data: {
                     accessToken,
                     newRefreshToken
                 }
-            })
+            });
+
         }catch(err){
             next(err);
         }
