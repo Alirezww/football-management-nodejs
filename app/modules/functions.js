@@ -47,9 +47,23 @@ const SignRefreshToken = async(userID) => {
     })
 };
 
+const VerifRefreshToken = async(token) => {
+    return new Promise((resolve, reject) => {
+        jwt.verify(token, REFRESH_TOKEN_SECRET_KEY, async(err, payload) => {
+            if(err) reject({ status: 401, message: "please login again" });
+
+            const { mobile } = payload || {};
+            const user = await UserModel.findOne({ mobile });
+            if(!user) reject({ status: 401, message: "please login again" });
+
+            resolve(mobile)
+        })
+    })
+}
+
 const randomNumberGenerator = () => {
     return Math.floor((Math.random() * 90000) + 10000)
-}
+};
 
 module.exports = {
     hash_string,
@@ -57,5 +71,6 @@ module.exports = {
     generateWebToken,
     verifyToken,
     randomNumberGenerator,
-    SignRefreshToken
+    SignRefreshToken,
+    VerifRefreshToken
 }

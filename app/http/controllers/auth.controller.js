@@ -1,5 +1,5 @@
 const { UserModel } = require("../../models/User");
-const { hash_string, compareResult, generateWebToken, randomNumberGenerator, SignRefreshToken } = require("../../modules/functions");
+const { hash_string, compareResult, generateWebToken, randomNumberGenerator, SignRefreshToken, VerifRefreshToken } = require("../../modules/functions");
 
 const autoBind = require("auto-bind");
 const { getOtpSchema } = require("../validations/authValidator");
@@ -100,6 +100,28 @@ class AuthController {
             })
         }catch(err){
             next(err)
+        }
+    };
+
+    async refreshToken(req, res, next){
+        try{
+            const { refreshToken } = req.headers;
+
+            const mobile = await VerifRefreshToken(refreshToken);
+
+            const user = await UserModel.findOne({ mobile });
+
+            const accessToken = generateWebToken(user._id);
+            const newRefreshToken = SignRefreshToken(user._id);
+
+            return res.status(200).json({
+                data: {
+                    accessToken,
+                    newRefreshToken
+                }
+            })
+        }catch(err){
+            next(err);
         }
     }
 
