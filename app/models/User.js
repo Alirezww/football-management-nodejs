@@ -8,7 +8,8 @@ const InviteRequest = new mongoose.Schema({
 
 const otpSchema = new mongoose.Schema({
     code : { type: Number, default: 0 },
-    expiresIn: { type: Date, default: 0 }
+    expiresIn: { type: Date, default: 0 },
+    times : { type: Number, default: 0 }
 })
 
 const userSchama = new mongoose.Schema({
